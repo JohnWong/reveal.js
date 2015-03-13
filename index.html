@@ -46,9 +46,52 @@
 					<p>
 						<small>Created by <a href="https://github.com/JohnWong" target="_blank">@John Wong</a></small>
 					</p>
-					<aside class="notes">
-						Iconfont
-					</aside>
+				</section>
+				<section>
+					<section>
+						<h2>续：Iconfont改进</h2>
+						<p class="fragment">
+							利用FontForge工具简化字形
+						</p>
+						<aside class="notes">
+							在深入了解字体重命名时用到的FontForge工具后，发现有Simplify功能可以简化字形节约体积。目前每次更新字体都会做这一步。
+						</aside>
+					</section>
+					<section>
+						<table>
+							<thead>
+								<tr>
+									<th>资源</th>
+									<th>空工程</th>
+									<th>2x图</th>
+									<th>3x图</th>
+									<th>字体</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>工程体积</td>
+									<td>195</td>
+									<td>249</td>
+									<td>268</td>
+									<td>214</td>
+								<tr>
+								<tr>
+									<td>资源体积</td>
+									<td>0</td>
+									<td>54</td>
+									<td>73</td>
+									<td>19</td>
+								<tr>
+							</tbody>
+						</table>
+						<blockquote class="fragment">
+							比之前体积减小近一半。字体体积是2x图的<span class="fragment highlight-red visible">35%</span>，是2x+3x图的<span class="fragment highlight-red visible">15%</span>。
+						</blockquote>
+						<aside class="notes">
+							IconFont虽然很好，但是只能解决单色图片。多色图仍然是大问题。
+						</aside>
+					</section>
 				</section>
 				<section>
 					<section>
@@ -57,6 +100,13 @@
 					<section>
 						<h2>缩减应用体积</h2>
 						<img width="1000" height="220" style="background:white" class="fragment" src="images/tweetbot-optimized-images.svg"/>
+						<p class="fragment">
+							ImageAlpha+ImageOptim最优<br>
+							压缩前的18.8%  Xcode压缩的35.4%
+						</p>
+						<aside class="notes">
+							根据ImageOptim工具给出的数据来看，压缩最小的工具时ImageAlpha+ImageOptim，是压缩前的18.8%，是Xcode压缩的35.4%
+						</aside>
 					</section>
 					<section>
 						<h2>提高加载速度</h2>
@@ -94,12 +144,15 @@
 								<tr>
 							</tbody>
 						</table>
+						<aside class="notes">
+							CgBI是是苹果的PNG图片变体。并没有带来加载速度的提升，因此ImageOptim作者决定不支持CgBI。
+						</aside>
 					</section>
 				</section>
-				<!-- Example of nested vertical slides -->
 				<section>
 					<h1>最有效的压缩方法</h1>
 					<h4><a class="fragment" href="http://jamiemason.github.io/ImageOptim-CLI/" target="_blank">图片压缩对比</a></h4>
+					<aside class="notes">可以看出ImageAlpha+ImageOptim有着非常高的压缩率。对于JPEG格式JPEGmini有着很高的压缩率，但是要收费。</aside>
 				</section>
 				<section>
 					<section>
@@ -121,17 +174,6 @@
 							<li class="fragment">优化压缩参数</li>
 							<li class="fragment">移除无用元数据</li>
 							<li class="fragment">移除不必要颜色配置</li>
-							<li class="fragment">支持拖拽操作和命令行</li>
-							<li class="fragment">多个工具依次压缩取最小</li>
-						</ul>
-					</section>
-					<section>
-						<h2>压缩原理</h2>
-						<ul>
-							<li class="fragment">优化压缩参数</li>
-							<li class="fragment">移除无用元数据</li>
-							<li class="fragment">移除不必要颜色配置</li>
-							<li class="fragment">支持拖拽操作和命令行</li>
 							<li class="fragment">多个工具依次压缩取最小</li>
 						</ul>
 					</section>
@@ -156,7 +198,8 @@
 							<li class="fragment">Posterization</li>
 						</ul>
 						<aside class="notes">
-						PNG图片被设计为无损格式
+						PNG图片被设计为无损格式，但是有方法可以做有损压缩。Average滤镜是png压缩预处理的几种滤镜之一。可以根据一个像素点左和上的像素来预测这个像素，猜对了几乎可以压缩到空。
+						PNG8通过存储调色板索引而不是实际RGB来移除3/4的文件数据，同时还可以带透明度。
 						</aside>
 					</section>
 					<section>
@@ -165,9 +208,6 @@
 							<li class="fragment">pngquant压缩最有效</li>
 							<li class="fragment">256色满足大多数图片要求</li>
 						</ul>
-						<aside class="notes">
-						PNG图片被设计为无损格式
-						</aside>
 					</section>
 				</section>
 				<section>
@@ -179,7 +219,7 @@
 						<ul>
 							<li class="fragment">操作两个工具实现最大压缩</li>
 							<li class="fragment">ImageAlpha手动保存图片</li>
-							<li class="fragment">ImageAlpha一次处理一张</li>
+							<li class="fragment">ImageAlpha没有批处理</li>
 						</ul>
 					</section>
 					<section>
@@ -196,6 +236,9 @@
 							<li class="fragment">会修改原图，备份或置于版本控制下</li>
 							<li class="fragment">有损压缩会失真，建议预览后再提交</li>
 						</ul>
+						<aside class="notes">
+							演示压缩设置、压缩效果、sourcetree失真对比
+						</aside>
 					</section>
 				</section>
 				<section>
@@ -208,8 +251,19 @@
 				</section>
 				
 				<section>
-					<a hfef="https://github.com/JohnWong/imageoptim">JohnWong/ImageOptim</a>
-					<a href="?print-pdf">Print</a>
+					<h1>THE END</h1>
+					<p>
+						<a href="https://github.com/pornel/" target="_blank">Kornel Lesiński</a>
+					</p>
+					<p>
+						<a href="https://github.com/JohnWong/imageoptim" target="_blank">Source Code</a>
+					</p>
+					<p>
+						<a href="?print-pdf">Print</a>
+					</p>
+					<aside class="notes">
+						ImageAlpha、ImageOptim、pngquant等图片压缩工具的作者。
+					</aside>
 				</section>
 			</div>
 
